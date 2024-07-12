@@ -613,18 +613,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="membership-form webform" role="form">
-                        <input type="text" class="form-control" name="cf-name" placeholder="Adınız Soyadınız">
-                        <input type="email" class="form-control" name="cf-email" placeholder="E-mail Adresiniz">
+                    <form id="contact-form" class="membership-form webform" role="form">
+                        <input type="text" class="form-control" name="cf-name" placeholder="Adınız Soyadınız" required>
+                        <input type="email" class="form-control" name="cf-email" placeholder="E-mail Adresiniz" required>
                         <input type="tel" class="form-control" name="cf-phone" id="phone-number" placeholder="Telefon Numaranız" required>
-                        <textarea class="form-control" rows="3" name="cf-message" placeholder="Ustaya saygınızı sunun"></textarea>
+                        <textarea class="form-control" rows="3" name="cf-message" placeholder="Ustaya saygınızı sunun" required></textarea>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="signup-agree">
+                            <input type="checkbox" class="custom-control-input" id="signup-agree" required>
                             <label class="custom-control-label text-small text-muted" for="signup-agree">Bilgilerimin kaydedilmesini ve işlenmesini kabul ediyorum <a href="#">Aydınlatma &amp;Metni</a>
                             </label>
                         </div>
                         <button type="submit" class="form-control" id="submit-button" name="submit">Gönder</button>
-                        
                     </form>
                 </div>
                 <div class="modal-footer"></div>
@@ -633,10 +632,10 @@
     </div>
     
     <script>
-    document.getElementById('phone-number').addEventListener('input', function (e) {
-        var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
-        e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2] + (x[3] ? '-' + x[3] : '') + (x[4] ? '-' + x[4] : '');
-    });
+        document.getElementById('phone-number').addEventListener('input', function (e) {
+            var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+            e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2] + (x[3] ? '-' + x[3] : '') + (x[4] ? '-' + x[4] : '');
+        });
     </script>
    
 
@@ -646,6 +645,35 @@
      <script src="js/aos.js"></script>
      <script src="js/smoothscroll.js"></script>
      <script src="js/custom.js"></script>
+     <script src="https://smtpjs.com/v3/smtp.js"></script>
+     <script>
+        document.getElementById('phone-number').addEventListener('input', function (e) {
+            var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+            e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2] + (x[3] ? '-' + x[3] : '') + (x[4] ? '-' + x[4] : '');
+        });
+
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.querySelector('input[name="cf-name"]').value;
+            const email = document.querySelector('input[name="cf-email"]').value;
+            const phone = document.querySelector('input[name="cf-phone"]').value;
+            const message = document.querySelector('textarea[name="cf-message"]').value;
+
+            Email.send({
+                SecureToken: "lwsg gmpj wamp tqqs",
+                To: 'anillemree@gmail.com',
+                From: email,
+                Subject: "Yeni Ön Kayıt Formu Mesajı",
+                Body: `Ad: ${name}<br>Email: ${email}<br>Telefon: ${phone}<br>Mesaj: ${message}`
+            }).then(
+                message => alert('Mesaj başarıyla gönderildi!')
+            ).catch(
+                error => alert('Mesaj gönderilirken hata oluştu: ' + error)
+            );
+        });
+    </script>
+
      <script>
         let slideIndex = 1;
         showSlides(slideIndex);
@@ -675,9 +703,8 @@
           dots[slideIndex-1].className += " active";
           captionText.innerHTML = dots[slideIndex-1].alt;
         }
-        </script>
-
-        <script>
+     </script>
+     <script>
             function openModal() {
                 document.getElementById("myModal").style.display = "block";
             }
@@ -714,7 +741,8 @@
             dots[slideIndex-1].className += " active";
             captionText.innerHTML = dots[slideIndex-1].alt;
             }
-        </script>
+     </script>
+     
 
 </body>
 </html>
